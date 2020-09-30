@@ -1,4 +1,4 @@
-function out = filterUp( in, L )
+function [out, sumMult, sumAdd] = filterUp( in, L, mult, add)
 
     % Chebyshev Arguments
     Wp = 1/L;
@@ -12,6 +12,10 @@ function out = filterUp( in, L )
     [h,~] = impz(b,a);
     E = poly1(h',L);
     
+    % Calculate adds and multiplies
+    sumMult = mult + length(h)*L;
+    sumAdd = add + length(h)*L -1;
+   
     % Filter
     lenConv = length(E(1,:))+length(in(:))-1;
     filtered = zeros( L, lenConv );
