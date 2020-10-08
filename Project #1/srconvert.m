@@ -15,8 +15,8 @@ function out = srconvert( in )
    
     out = 3*downsample(out,3);
     out = out./max( abs(out) );
-    disp( totalMult )
-    disp( totalAdd )
-    disp( "Hand calculation:  3977 multiplication and 3970 additions." )
+    disp( "Total Multiplications: " + totalMult );
+    disp( "Total Additions: " + totalAdd );
+    disp( "Hand calculation:  1357 multiplication and 1350 additions." );
     
 end

@@ -13,8 +13,10 @@ function [out, sumMult, sumAdd] = filterUp( in, L, mult, add)
     E = poly1(h',L);
     
     % Calculate adds and multiplies
-    sumMult = mult + length(h)*L;
-    sumAdd = add + length(h)*L -1;
+    N = length(h);
+    sumMult = mult + N;
+    sumAdd = add + N - L;
+    sumAdd = sumAdd + L - 1;
    
     % Filter
     lenConv = length(E(1,:))+length(in(:))-1;

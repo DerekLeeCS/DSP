@@ -6,6 +6,7 @@ close all
 % Project #1
 % Derek Lee, Brian Doan, Steven Lee
 
+
 %% Load audio
 
 [ m, FREQ_INPUT ] = audioread('Wagner.wav');
