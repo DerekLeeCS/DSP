@@ -19,34 +19,35 @@ t = linspace( 0, T, f_s*T );
 %% Question 1
 
 n_overlap = 255;
-window = triang(n).';
+window = triang(n);
 x = cos( 2*pi*mu_1*t.^2 );
 
-% X_n(w)
+% X_1(w)
 figure();
 spectrogram( x, window, n_overlap, n, 'yaxis' );
 title( "X_1(w)" );
 
 
 %% Question 2 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%THIS IS WRONG
 
-% The slope of f_1 corresponds with the slope of the ridge in the spectrogram.
+% The slope of f_2 corresponds with the slope of the ridge in the
+% spectrogram. It is off by a factor of 2.
 
 f_1 = mu_1*t;
 stepSize = t(2) - t(1);
 f_2 = 1/(2*pi) * diff( 2*pi*mu_1*t.^2 ) / stepSize;
 
-%%%%%%%%%%%%%%%% NEED TO NORMALIZE FREQUENCY TO COMPARE
-% f_1 = f_1 / f_s;
-% f_2 = f_2 / f_s;
+f_2 = f_2 * 2;  % Need to add a factor of 2 to match.
 
-figure();
+% Normalize the frequency
+f_1 = f_1 / f_s;
+f_2 = f_2 / f_s;
+
+% Plot on top of the spectrogram to compare
 hold on;
-plot( t, f_1, 'DisplayName', 'f_1' );
-plot( t(1:end-1), f_2, 'DisplayName', 'f_2' );
-xlabel( "Time (s)" );
-ylabel( "Frequency (Hz)" );
+plot( f_1, 'DisplayName', 'f_1' );
+plot( f_2, 'DisplayName', 'f_2' );
+hold off;
 legend();
 
 
@@ -56,16 +57,85 @@ legend();
 % ridge for X_1(w). The slope (by inspection) is approximately 2.5x
 % steeper, which corresponds with the change in mu. mu_2 = 2.5 * mu_1.
 
-
 mu_2 = 1 * 1e10;
 x_2 = cos( 2*pi*mu_2*t.^2 );
 
 % X_2(w)
 figure();
-spectrogram( x_2, window, n_overlap, n, 'yaxis' );
+spectrogram( x_2, window, n_narrow_overlap, n, 'yaxis' );
 title( "X_2(w)" );
 
 
 %% Question 4
 
+load s1.mat
+load s5.mat
+f_s = 8 * 1e3;  % 8 kHz
+
+n_narrow = 512;
+n_narrow_overlap = n_narrow-1;
+window_narrow = triang(n_narrow).';
+
+% S_1(w)
+figure();
+spectrogram( s1, window_narrow, n_narrow_overlap, n_narrow, 'yaxis' );
+title( "S_1(w)" );
+
+% S_5(w)
+figure();
+spectrogram( s5, window_narrow, n_narrow_overlap, n_narrow, 'yaxis' );
+title( "S_5(w)" );
+
+
+%% Question 5
+
+n_wide = 16;
+n_wide_overlap = 4*n_wide-1;
+window_wide = triang(4*n_wide).';
+
+% S_1(w)
+figure();
+spectrogram( s1, window_wide, n_wide_overlap, n_wide, 'yaxis' );
+title( "S_1(w)" );
+
+% S_5(w)
+figure();
+spectrogram( s5, window_wide, n_wide_overlap, n_wide, 'yaxis' );
+title( "S_5(w)" );
+
+
+%% Question 6
+
+load vowels.mat
+
+n_mod = 1024;
+n_mod_overlap = 128;
+window_mod = ones( 256, 1 );
+s = spectrogram( vowels, window_mod, n_mod_overlap, n_mod, 'yaxis' );
+s = [s;s];
+vowels_new = reconstruct( s, n_mod );
+
+
+%% Listen to the signals
+
+soundsc( vowels, f_s );
+soundsc( vowels_new, f_s );
+
+
+%% Question 7
+
+s = spectrogram( vowels, window_mod, n_mod_overlap, n_mod, 'yaxis' );
+
+% Throw out every other column
+s = s( :, (1:2:end) );
+
+vowels_fast = reconstruct( s, n_mod );
+
+
+%% Listen to the signal
+
+% It sounds very bad, but playing the sound with half of the sampling rate
+% is much better
+soundsc( vowels_fast, f_s );
+soundsc( vowels_fast, f_s/2 );
 
