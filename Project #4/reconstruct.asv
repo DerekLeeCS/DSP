@@ -4,15 +4,15 @@ function signal = reconstruct( STFT, n )
     window = 256;
     n_overlap = 128;
 
-    % Only need points up to the window size
-    STFT = real( ifft( STFT ) );
+    % Only need the first 256 points
     STFT = STFT( 1:window, : );
+    STFT = real( ifft( STFT ) );
     
     numCols = size( STFT, 2 );
     signal = zeros( n, numCols );
     curSample = 1;
     for i = 1:numCols
-
+        
         signal_time = STFT(:,i);
         signal( curSample:curSample+window-1, i ) = signal_time;
         curSample = curSample + n_overlap;

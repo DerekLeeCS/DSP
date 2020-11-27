@@ -62,7 +62,7 @@ x_2 = cos( 2*pi*mu_2*t.^2 );
 
 % X_2(w)
 figure();
-spectrogram( x_2, window, n_narrow_overlap, n, 'yaxis' );
+spectrogram( x_2, window, n_overlap, n, 'yaxis' );
 title( "X_2(w)" );
 
 
@@ -110,15 +110,15 @@ load vowels.mat
 
 n_mod = 1024;
 n_mod_overlap = 128;
-window_mod = ones( 256, 1 );
+window_mod = rectwin(256);
 s = spectrogram( vowels, window_mod, n_mod_overlap, n_mod, 'yaxis' );
-s = [s;s];
+s = [s;flipud(s)];
 vowels_new = reconstruct( s, n_mod );
 
 
 %% Listen to the signals
 
-soundsc( vowels, f_s );
+%soundsc( vowels, f_s );
 soundsc( vowels_new, f_s );
 
 
@@ -128,14 +128,14 @@ s = spectrogram( vowels, window_mod, n_mod_overlap, n_mod, 'yaxis' );
 
 % Throw out every other column
 s = s( :, (1:2:end) );
+s = [s;flipud(s)];
 
 vowels_fast = reconstruct( s, n_mod );
 
 
 %% Listen to the signal
 
-% It sounds very bad, but playing the sound with half of the sampling rate
-% is much better
+% It sounds twice as fast as the original
 soundsc( vowels_fast, f_s );
-soundsc( vowels_fast, f_s/2 );
+%soundsc( vowels_fast, f_s/2 );
 
