@@ -113,13 +113,21 @@ n_mod_overlap = 128;
 window_mod = rectwin(256);
 s = spectrogram( vowels, window_mod, n_mod_overlap, n_mod, 'yaxis' );
 s = [s;flipud(s)];
-vowels_new = reconstruct( s, n_mod );
+vowels_reconstructed = ISTFT( s, n_mod );
+
+% Plot the difference
+figure();
+difference = vowels( 1:size(vowels_reconstructed,1) ) - vowels_reconstructed;
+plot( difference );
+title( "Difference between Original and Reconstructed Signal" );
+xlabel( "Samples" );
 
 
 %% Listen to the signals
 
+% It sounds almost exactly the same as the original
 %soundsc( vowels, f_s );
-soundsc( vowels_new, f_s );
+soundsc( vowels_reconstructed, f_s );
 
 
 %% Question 7
@@ -130,7 +138,7 @@ s = spectrogram( vowels, window_mod, n_mod_overlap, n_mod, 'yaxis' );
 s = s( :, (1:2:end) );
 s = [s;flipud(s)];
 
-vowels_fast = reconstruct( s, n_mod );
+vowels_fast = ISTFT( s, n_mod );
 
 
 %% Listen to the signal

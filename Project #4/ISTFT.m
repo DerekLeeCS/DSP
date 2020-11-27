@@ -1,20 +1,20 @@
-function signal = reconstruct( STFT, n )
+function signal = ISTFT( signal_windowed, n )
 
     % Given constants
     window = 256;
     n_overlap = 128;
 
     % Only need points up to the window size
-    STFT = real( ifft( STFT ) );
-    STFT = STFT( 1:window, : );
+    signal_windowed = real( ifft( signal_windowed ) );
+    signal_windowed = signal_windowed( 1:window, : );
     
-    numCols = size( STFT, 2 );
+    numCols = size( signal_windowed, 2 );
     signal = zeros( n, numCols );
     curSample = 1;
     for i = 1:numCols
-
-        signal_time = STFT(:,i);
-        signal( curSample:curSample+window-1, i ) = signal_time;
+        
+        signal_temp = signal_windowed(:,i);
+        signal( curSample:curSample+window-1, i ) = signal_temp;
         curSample = curSample + n_overlap;
         
     end
