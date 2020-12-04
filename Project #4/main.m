@@ -89,9 +89,9 @@ title( "S_5(w)" );
 
 %% Question 5
 
-n_wide = 16;
-n_wide_overlap = 4*n_wide-1;
-window_wide = triang(4*n_wide).';
+n_wide = 64;
+n_wide_overlap = n_wide-1;
+window_wide = triang(n_wide).';
 
 % S_1(w)
 figure();
@@ -143,7 +143,7 @@ vowels_fast = ISTFT( s, n_mod );
 
 %% Listen to the signal
 
-% It sounds twice as fast as the original
+% It sounds twice as fast as the original. There is no distortion that
+% would be present from doubling the sampling frequency.
 soundsc( vowels_fast, f_s );
-%soundsc( vowels_fast, f_s/2 );
 
