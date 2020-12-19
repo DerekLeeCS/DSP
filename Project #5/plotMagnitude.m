@@ -1,6 +1,6 @@
 function plotMagnitude( f, signal, titleVar )
     
-    plot( f, abs( fftshift( signal ) ) );
+    plot( f, abs( signal ) );
     title( titleVar );
     xlabel( 'Frequency (Hz)' );
     ylabel( 'Magnitude' );
