@@ -3,7 +3,7 @@ clear
 close all
 
 % Derek Lee, Brian Doan, Steven Lee
-% Digital Signals Processing Fall 2020
+% Digital Signal Processing Fall 2020
 % Project #2
 
 

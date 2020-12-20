@@ -2,7 +2,7 @@ clc
 clear
 close all
 
-% Digital Signals Processing Fall 2020
+% Digital Signal Processing Fall 2020
 % Project #1
 % Derek Lee, Brian Doan, Steven Lee
 
